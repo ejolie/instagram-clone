@@ -1,6 +1,6 @@
 # Instagram Clone
 
-Instagram clone coding build with Django
+Instagram clone coding built with Django
 
 
 ## Getting started
