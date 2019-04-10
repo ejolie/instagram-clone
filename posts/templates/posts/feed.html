@@ -1,7 +1,16 @@
 {% extends 'base.html' %}
 
 {% block body %}
-  {% for post in posts %}
-    {{ post.content }}
-  {% endfor %}
+  <div class="row d-flex justify-content-center">
+    {% for post in posts %}
+    <div class="card mb-5" style="width: 40rem;">
+      <img src="https://picsum.photos/200/200/?random" class="card-img-top" alt="...">
+      <div class="card-body">
+        <p class="card-text">{{ post.content }}</p>
+        <a href="{% url 'posts:update' post.id %}" class="btn btn-sm btn-outline-success">수정</a>
+        <a href="{% url 'posts:delete' post.id %}" class="btn btn-sm btn-outline-danger">삭제</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
 {% endblock %}
