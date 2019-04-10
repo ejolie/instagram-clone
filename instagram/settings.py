@@ -31,13 +31,14 @@ ALLOWED_HOSTS = ['insta-ejolie.c9users.io']
 # Application definition
 
 INSTALLED_APPS = [
+    'posts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'posts',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
