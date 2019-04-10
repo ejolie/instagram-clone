@@ -8,7 +8,7 @@ def create(request):
         form = PostForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('posts:create')
+            return redirect('posts:feed')
     else: # GET
         # post를 작성하는 form을 보여줌
         form = PostForm()
@@ -16,3 +16,10 @@ def create(request):
             'form': form,
         })
         
+def feed(request):
+    # 모든 post를 보여줌
+    posts = Post.objects.all()
+    return render(request, 'posts/feed.html', {
+        'posts': posts,
+    })
+    
