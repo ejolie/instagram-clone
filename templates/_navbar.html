@@ -18,10 +18,10 @@
       </li>
       {% else %}
       <li class="nav-item d-flex align-items-center">
-        <a class="btn btn-sm btn-outline-secondary" href="{% url 'accounts:login' %}">Login</a>
+        <a class="btn btn-sm btn-secondary" href="{% url 'accounts:login' %}">Login</a>
       </li>
       <li class="nav-item d-flex align-items-center ml-2">
-        <a class="btn btn-sm btn-outline-secondary" href="#">Signup</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'accounts:signup' %}">Signup</a>
       </li>
       {% endif %}
     </ul>
