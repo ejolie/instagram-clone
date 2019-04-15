@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate, get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 def login(request):
@@ -35,3 +35,13 @@ def signup(request):
         return render(request, 'accounts/signup.html', { 
             'form': form,
         })
+        
+def profile(request, username):
+    # 사용자에 대한 정보
+    # 1. settings.AUTH_USER_MODEL (django.conf)
+    # 2. get_user_model() (django.contrib.auth)
+    # 3. User (django.contrib.auth.model) [X]
+    person = get_object_or_404(get_user_model(), username=username)
+    return render(request, 'accounts/profile.html', {
+        'person': person,
+    })
