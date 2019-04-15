@@ -15,9 +15,11 @@ def feed(request):
 def create(request):
     if request.method == 'POST':
         # 작성된 post를 DB에 적용
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
             return redirect('posts:feed')
     else: # GET
         # post를 작성하는 form을 보여줌
@@ -28,19 +30,20 @@ def create(request):
         
 
 def update(request, pk):
+    post = get_object_or_404(Post, id=pk)
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
-            form.save()
+            post = form.save(commit=False)
+            post.save()
             return redirect('posts:feed')
     else:
-        post = get_object_or_404(Post, id=pk)
-        form = PostForm()
+        
+        form = PostForm(instance=post)
         return render(request, 'posts/update.html', {
-            'post': post,
+            'form': form,
         })
         
-    
 @require_POST
 def delete(request, pk):
     post = get_object_or_404(Post, id=pk)

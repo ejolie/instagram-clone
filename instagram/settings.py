@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ['insta-ejolie.c9users.io']
 
 INSTALLED_APPS = [
     'posts',
-    'login',
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

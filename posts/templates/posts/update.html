@@ -3,12 +3,12 @@
 {% load bootstrap4 %}
 
 {% block body %}
-<h1 class="display-4 text-center mb-5">글 쓰기</h1>
+<h1 class="display-4 text-center mb-5">수정하기</h1>
 <div class="container" style="max-width: 300px;">
     <form action="{% url 'posts:create' %}" method="POST">
         {% csrf_token %}
         {% bootstrap_form form %}
-        <button class="btn btn-outline-primary">작성</button>
+        <button class="btn btn-outline-primary">수정</button>
     </form>
 </div>
 {% endblock %}
