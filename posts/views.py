@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from .models import Post
 from .forms import PostForm
@@ -32,7 +32,7 @@ def update(request, pk):
             form.save()
             return redirect('posts:feed')
     else:
-        post = Post.objects.get(id=pk)
+        post = get_object_or_404(Post, id=pk)
         form = PostForm()
         return render(request, 'posts/update.html', {
             'post': post,
@@ -41,6 +41,20 @@ def update(request, pk):
     
 @require_POST
 def delete(request, pk):
-    post = Post.objects.get(id=pk)
+    post = get_object_or_404(Post, id=pk)
     post.delete()
+    return redirect('posts:feed')
+    
+def like(request, pk):
+    # 1. like를 추가할 포스트를 가져옴
+    post = get_object_or_404(Post, id=pk)
+    # post = Post.object.get(id=pk)
+    
+    # 2-1. 만약 유저가 해당 post를 이미 like 했다면, like를 해제하고
+    # 2-2. 아니면, like를 추가한다.
+    user = request.user
+    if user in post.like_users.all():
+        post.like_users.remove(user)
+    else:
+        post.like_users.add(user)
     return redirect('posts:feed')
