@@ -1,39 +1,61 @@
 {% extends 'base.html' %}
 
+{% load bootstrap4 %}
+
 {% block body %}
   <div class="d-flex justify-content-end mb-5">
     <a class="btn btn-sm btn-outline-secondary" href="{% url 'posts:create' %}">글 쓰기</a>
   </div>
   <div class="row d-flex justify-content-center">
+    <!-- Post start -->
     {% for post in posts %}
-    <div class="card mb-5" style="width: 40rem;">
-      <!-- <img src="{{ post.imgurl }}" class="card-img-top" alt="..."> -->
-      <img src="https://picsum.photos/200/200/?random" class="card-img-top" alt="...">
-      <div class="card-body">
-        <span>{{ post.user }}</span>
-        <p class="card-text lead">{{ post.content }}</p>
-      </div>
-      <div class="card-body">
-        <div class="d-flex justify-content-between">
-          <div> <!-- 좋아요 버튼 -->
-            <a href="{% url 'posts:like' post.id %}">
-              {% if user in post.like_users.all %}
-              <i class="fas fa-heart fa-lg"></i>
-              {% else %}
-              <i class="far fa-heart fa-lg"></i>
-              {% endif %}
-            </a>
-            <span class="ml-2">좋아요 {{ post.like_users.count }}개</span>
-          </div>
-          <div> <!-- 작성자만 수정, 삭제 가능 -->
-          {% if post.user == request.user %}
-            <a href="{% url 'posts:update' post.id %}" class="btn btn-sm btn-outline-success">수정</a>
-            <a href="{% url 'posts:delete' post.id %}" class="btn btn-sm btn-outline-danger ml-2">삭제</a>
-          {% endif %}    
+      <div class="card mb-5" style="width: 40rem;"> 
+        <!-- <img src="{{ post.imgurl }}" class="card-img-top" alt="..."> -->
+        <img src="https://picsum.photos/200/200/?random" class="card-img-top" alt="...">
+        <div class="card-body">
+          <span><b>{{ post.user }}</b></span>
+          <p class="card-text lead">{{ post.content }}</p>
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div> <!-- Like button start -->
+              <a href="{% url 'posts:like' post.id %}">
+                {% if user in post.like_users.all %}
+                  <i class="fas fa-heart fa-lg"></i>
+                {% else %}
+                  <i class="far fa-heart fa-lg"></i>
+                {% endif %}
+              </a>
+              <span class="ml-2">좋아요 {{ post.like_users.count }}개</span>
+            </div> <!-- Like button end -->
+            <div> <!-- Edit, Delete buttons start -->
+              {% if post.user == request.user %}
+                <a href="{% url 'posts:update' post.id %}" class="btn btn-sm btn-outline-success">수정</a>
+                <a href="{% url 'posts:delete' post.id %}" class="btn btn-sm btn-outline-danger ml-2">삭제</a>
+              {% endif %}    
+            </div> <!-- Edit, Delete buttons end -->
           </div>
         </div>
+        <!-- Comment start -->
+        {% if user.is_authenticated %}
+          <div class="card-body">
+            <div class="mb-3">
+              {% for comment in post.comment_set.all %}
+              <p><b>{{ comment.user.username }}</b> {{ comment.content }} <small><a href="{% url 'posts:delete_comment' post.id comment.id %}">[삭제]</a></small></p>
+              {% empty %}
+              <p>댓글이 없습니다.</p>
+              {% endfor %}
+            </div>
+            <form class"form-inline" action="{% url 'posts:create_comment' post.id %}" method="POST">
+              {% csrf_token %}
+              {% bootstrap_form comment_form layout='inline' %}
+              <button class="btn btn-sm btn-outline-secondary">입력</button>
+            </form>
+          </div>
+        {% endif %}
+        <!-- Comment end -->
       </div>
-    </div>
     {% endfor %}
+    <!-- Post end -->
   </div>
 {% endblock %}
