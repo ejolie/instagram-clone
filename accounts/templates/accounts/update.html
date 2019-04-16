@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% load bootstrap4 %}
+
+{% block body %}
+<h1 class="display-4 text-center mb-5">개인정보 수정</h1>
+<div class="container" style="max-width: 300px;">
+    <form action="{% url 'accounts:update' %}" method="POST">
+        {% csrf_token %}
+        {% bootstrap_form custom_user_change_form %}
+        {% bootstrap_form password_change_form %}
+        <button type="submit" class="btn btn-outline-success btn-block">수정</button>
+    </form>
+</div>
+{% endblock %}

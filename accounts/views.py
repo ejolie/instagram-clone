@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate, get_user_model
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate, get_user_model, update_session_auth_hash
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
+from .forms import CustomUserChangeForm
 
 def login(request):
     # POST : 실제 로그인 (세션에 유저 정보 추가)
@@ -45,3 +46,37 @@ def profile(request, username):
     return render(request, 'accounts/profile.html', {
         'person': person,
     })
+    
+# 회원 정보 변경 (편집 + 반영)
+def update(request):
+    if request.method == 'POST':
+        user_change_form = CustomUserChangeForm(request.POST, instance=request.user)
+        if user_change_form.is_valid():
+            user_change_form.save()
+            return redirect('accounts:profile', request.user.username)
+    else:
+        custom_user_change_form = CustomUserChangeForm(instance=request.user)
+        password_change_form = PasswordChangeForm(request.user)
+        return render(request, 'accounts/update.html', {
+            'custom_user_change_form': custom_user_change_form,
+            'password_change_form': password_change_form,
+        })
+        
+def delete(request):
+    if request.method == 'POST':
+        request.user.delete()
+        return redirect('posts:feed')
+    return render(request, 'accounts/delete.html')
+    
+def password(request):
+    if request.method == 'POST':
+        password_change_form = PasswordChangeForm(request.user, request.POST)
+        if password_change_form.is_valid():
+            password_change_form.save()
+            update_session_auth_hash(request, request.user)
+        return redirect('accounts:profile', request.user.username)
+    else:
+        password_change_form = PasswordChangeForm(request.user)
+        return render(request, 'accounts/password.html', {
+            'password_change_form': password_change_form
+        })

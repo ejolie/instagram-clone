@@ -1,10 +1,16 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<h1 class="display-4">{{ person.username }}</h1>
+<h1 class="display-5">{{ person.username }}</h1>
+<h4>{{ person.first_name}} {{ person.last_name }}</h4>
 <div class="row">
-  {% for post in people.post_set.all %}
+  {% for post in person.post_set.all %}
     <img src="{{ post.image.url }}" class="img-fluid"></img>
   {% endfor %}
 </div>
+{% if user.username == person.username %}
+<a href="{% url 'accounts:password' %}" class="btn btn-outline-success">비밀번호 변경정</button>
+  <a href="{% url 'accounts:update' %}" class="btn btn-outline-success">개인정보 수정</button>
+  <a href="{% url 'accounts:delete' %}" class="btn btn-outline-danger">회원탈퇴</button>
+{% endif %}
 {% endblock %}
