@@ -10,8 +10,11 @@
     <!-- Post start -->
     {% for post in posts %}
       <div class="card mb-5" style="width: 40rem;"> 
-        <!-- <img src="{{ post.imgurl }}" class="card-img-top" alt="..."> -->
-        <img src="https://picsum.photos/200/200/?random" class="card-img-top" alt="...">
+        {% if post.image %}
+          <img src="{{ post.image.url }}" class="card-img-top" alt="Image">
+        {% else %}
+          <img src="https://picsum.photos/200/200/?random" class="card-img-top" alt="Image">
+        {% endif %}
         <div class="card-body">
           <span><b>{{ post.user }}</b></span>
           <p class="card-text lead">{{ post.content }}</p>

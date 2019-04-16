@@ -5,7 +5,7 @@
 {% block body %}
 <h1 class="display-4 text-center mb-5">글 쓰기</h1>
 <div class="container" style="max-width: 300px;">
-    <form action="{% url 'posts:create' %}" method="POST">
+    <form action="{% url 'posts:create' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form post_form %}
         <button class="btn btn-outline-primary">작성</button>

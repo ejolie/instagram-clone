@@ -13,10 +13,15 @@ class PostForm(forms.ModelForm):
         )
     )
     
+    image = forms.ImageField(
+        label='사진',
+        widget=forms.FileInput()
+    )
+
     # 2. 해당 input 필드의 속성을 추가 & 어떤 모델을 조작할지
     class Meta:
         model = Post
-        fields = ['content'] # '__all__'
+        fields = ['content', 'image'] # '__all__'
         
 class CommentForm(forms.ModelForm):
     content = forms.CharField(
