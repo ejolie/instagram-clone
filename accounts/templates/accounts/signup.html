@@ -7,7 +7,7 @@
 <div class="container" style="max-width: 300px;">
     <form action="{% url 'accounts:signup' %}" method="POST">
         {% csrf_token %}
-        {% bootstrap_form form %}
+        {% bootstrap_form signup_form %}
         <button type="submit" class="btn btn-outline-primary btn-block">회원가입</button>
     </form>
 </div>
