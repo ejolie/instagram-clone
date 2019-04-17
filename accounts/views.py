@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate, get_user_model, update_session_auth_hash
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 
-from .forms import CustomUserChangeForm, ProfileForm
+from .forms import CustomUserChangeForm, CustomUserCreationForm, ProfileForm
 from .models import Profile
 
 # 로그인
@@ -32,7 +32,7 @@ def logout(request):
 # 회원가입
 def signup(request):
     if request.method == 'POST':
-        signup_form = UserCreationForm(request.POST)
+        signup_form = CustomUserCreationForm(request.POST)
         if signup_form.is_valid():
             user = signup_form.save()
             # Profile model
@@ -40,7 +40,7 @@ def signup(request):
             auth_login(request, user)
             return redirect('posts:feed')
     else:
-        signup_form = UserCreationForm()
+        signup_form = CustomUserCreationForm()
         return render(request, 'accounts/signup.html', { 
             'signup_form': signup_form,
         })
@@ -110,3 +110,11 @@ def password(request):
         return render(request, 'accounts/password.html', {
             'password_change_form': password_change_form
         })
+        
+def follow(request, user_id): # user_id : to
+    person = get_object_or_404(get_user_model(), pk=user_id)
+    if request.user in person.followers.all():
+        person.followers.remove(request.user)
+    else:
+        person.followers.add(request.user)
+    return redirect('profile', request.user.username)

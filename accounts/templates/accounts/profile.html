@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<h1 class="display-4">{{ person.username }}</h1>
+<h1 class="display-4 d-inline">{{ person.username }}</h1>
+<a class="ml-3 btn btn-sm btn-primary mb-3" href="#" role="button">팔로우</a>
 <h4>{{ person.profile.nickname }}</h4>
 <p class="lead">{{ person.profile.description }}</p>
+<b>팔로워 | 팔로잉</b>
 <div class="card-deck mt-5 mb-2">
   {% if person.post_set %}
     {% for post in person.post_set.all %}

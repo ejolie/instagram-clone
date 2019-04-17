@@ -128,3 +128,6 @@ MEDIA_URL = '/media/'
 
 # 업로드된 파일을 저장할 디렉토리 경로
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# User(AbstractUser) @accounts/models.py
+AUTH_USER_MODEL = 'accounts.User'
