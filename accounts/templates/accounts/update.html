@@ -7,8 +7,8 @@
 <div class="container" style="max-width: 300px;">
     <form action="{% url 'accounts:update' %}" method="POST">
         {% csrf_token %}
-        {% bootstrap_form custom_user_change_form %}
-        {% bootstrap_form password_change_form %}
+        {% bootstrap_form user_change_form %}
+        {% bootstrap_form profile_form %}
         <button type="submit" class="btn btn-outline-success btn-block">수정</button>
     </form>
 </div>

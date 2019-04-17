@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
-from django.contrib.auth import get_user_model 
+from django.contrib.auth import get_user_model
+
+from .models import Profile
         
 # class LoginForm(forms.ModelForm):
 #     username = forms.CharField(
@@ -11,7 +13,6 @@ from django.contrib.auth import get_user_model
 #             }
 #         )
 #     )
-    
 #     password = forms.CharField(
 #         label='Password',
 #         widget=forms.PasswordInput(
@@ -39,3 +40,8 @@ class CustomUserChangeForm(UserChangeForm):
             'first_name',
             'last_name',
         ]
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['nickname', 'description']

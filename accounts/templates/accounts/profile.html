@@ -1,16 +1,25 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<h1 class="display-5">{{ person.username }}</h1>
-<h4>{{ person.first_name}} {{ person.last_name }}</h4>
-<div class="row">
-  {% for post in person.post_set.all %}
-    <img src="{{ post.image.url }}" class="img-fluid"></img>
-  {% endfor %}
+<h1 class="display-4">{{ person.username }}</h1>
+<h4>{{ person.profile.nickname }}</h4>
+<p class="lead">{{ person.profile.description }}</p>
+<div class="card-deck mt-5 mb-2">
+  {% if person.post_set %}
+    {% for post in person.post_set.all %}
+    <div class="card">
+      <img src="{{ post.image.url }}" class="img-fluid" alt="Image">
+    </div>
+    {% endfor %}
+  {% else %}
+  <p class="lead">사진이 없습니다.</p>
+  {% endif %}
 </div>
+<div class="my-5 d-flex justify-content-end">
 {% if user.username == person.username %}
-<a href="{% url 'accounts:password' %}" class="btn btn-outline-success">비밀번호 변경정</button>
-  <a href="{% url 'accounts:update' %}" class="btn btn-outline-success">개인정보 수정</button>
-  <a href="{% url 'accounts:delete' %}" class="btn btn-outline-danger">회원탈퇴</button>
+  <a href="{% url 'accounts:password' %}" class="btn btn-outline-success ml-2">비밀번호 변경</a>
+  <a href="{% url 'accounts:update' %}" class="btn btn-outline-success ml-2">개인정보 수정</a>
+  <a href="{% url 'accounts:delete' %}" class="btn btn-outline-danger ml-2">회원탈퇴</a>
+</div>
 {% endif %}
 {% endblock %}
