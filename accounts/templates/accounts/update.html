@@ -5,7 +5,7 @@
 {% block body %}
 <h1 class="display-4 text-center mb-5">개인정보 수정</h1>
 <div class="container" style="max-width: 300px;">
-    <form action="{% url 'accounts:update' %}" method="POST">
+    <form action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {% bootstrap_form user_change_form %}
         {% bootstrap_form profile_form %}

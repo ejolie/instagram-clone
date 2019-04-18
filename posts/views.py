@@ -9,6 +9,7 @@ from .forms import PostForm, CommentForm
 '''
 Post
 '''
+@login_required
 def feed(request):
     # 1. 내가 팔로우한 사람들의 post만 보여줌
     # posts = Post.objects.filter(user_id__in=request.user.followings.all())
