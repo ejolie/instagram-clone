@@ -2,7 +2,11 @@
 
 {% block body %}
 <h1 class="display-4 d-inline">{{ person.username }}</h1>
-<a class="ml-3 btn btn-sm btn-primary mb-3" href="#" role="button">팔로우</a>
+{% if request.user in person.follwers %}
+  <a class="ml-3 btn btn-sm btn-outline-primary mb-3" href="#" role="button">팔로잉</a>
+{% else %}
+  <a class="ml-3 btn btn-sm btn-primary mb-3" href="{% url 'accounts:follow' person.id %}" role="button">팔로우</a>
+{% endif %}
 <h4>{{ person.profile.nickname }}</h4>
 <p class="lead">{{ person.profile.description }}</p>
 <b>팔로워 | 팔로잉</b>

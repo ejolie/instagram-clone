@@ -12,7 +12,7 @@
       <div class="card mb-5" style="width: 40rem;"> 
         <img src="{{ post.image.url }}" class="card-img-top" alt="Image">
         <div class="card-body">
-          <span><b>{{ post.user }}</b></span>
+          <span><a href="{% url 'profile' post.user.username %}"><b>{{ post.user }}</b></a></span>
           <p class="card-text lead">{{ post.content }}</p>
         </div>
         <div class="card-body">

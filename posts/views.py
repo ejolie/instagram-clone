@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
@@ -9,8 +10,15 @@ from .forms import PostForm, CommentForm
 Post
 '''
 def feed(request):
-    # 모든 post를 보여줌
-    posts = Post.objects.all()
+    # 1. 내가 팔로우한 사람들의 post만 보여줌
+    # posts = Post.objects.filter(user_id__in=request.user.followings.all())
+    # 2. 1 + 내가 작성한 post도 보여줌
+    # my_posts = request.user.post_set.all()
+    # posts.extend(my_posts)
+    
+    posts = Post.objects.filter(Q(user_id__in=request.user.followings.all()))
+
+    # 3. comment를 작성하는 form 보여줌
     comment_form = CommentForm()
     return render(request, 'posts/feed.html', {
         'posts': posts,

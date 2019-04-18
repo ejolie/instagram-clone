@@ -74,15 +74,15 @@ def update(request):
         # - 해결 방법 2.
         # get_or_create() 사용 : tuple 리턴
         # 원래 있었다면 profile 리턴, 없었다면 created 리턴
-        profile, created = Profile.objects.get_or_create(user=request.user)
-        profile_form = ProfileForm(instance=profile, data=request.POST) # created(boolean flag) 제거하고 이것만 넣어줄 수 있음
+        profile_form = ProfileForm(instance=request.user.profile, data=request.POST) 
         if user_change_form.is_valid() and profile_form.is_valid():
             user = user_change_form.save()
             profile_form.save()
             return redirect('profile', user.username)
     else:
-        user_change_form = CustomUserChangeForm(instance=request.user)
-        profile_form = ProfileForm(instance=request.user.profile)
+        user_change_form = CustomUserChangeForm(instance=request.user) 
+        profile, created = Profile.objects.get_or_create(user=request.user) # created(boolean flag) 제거하고 이것만 넣어줄 수 있음
+        profile_form = ProfileForm(instance=profile)
         return render(request, 'accounts/update.html', {
             'user_change_form': user_change_form,
             'profile_form': profile_form
@@ -111,6 +111,7 @@ def password(request):
             'password_change_form': password_change_form
         })
         
+# 팔로우
 def follow(request, user_id): # user_id : to
     person = get_object_or_404(get_user_model(), pk=user_id)
     if request.user in person.followers.all():
